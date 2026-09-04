@@ -1,20 +1,31 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * Source: CMES supplied CREATE TABLE specification.
      */
     public function up(): void
     {
-        Schema::create('customer_saved_blogs', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        DB::unprepared(<<<'SQL'
+CREATE TABLE customer_saved_blogs (
+    customer_account_id BIGINT UNSIGNED NOT NULL,
+    blog_id BIGINT UNSIGNED NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (customer_account_id, blog_id),
+    CONSTRAINT fk_saved_blog_customer FOREIGN KEY (customer_account_id)
+        REFERENCES customer_accounts(id) ON DELETE CASCADE,
+    CONSTRAINT fk_saved_blog_blog FOREIGN KEY (blog_id)
+        REFERENCES blogs(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+SQL
+        );
     }
 
     /**
