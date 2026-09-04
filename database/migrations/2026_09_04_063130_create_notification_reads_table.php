@@ -8,12 +8,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * Schema derived from the CMES Mobile "Schema / Key Fields" catalogue
+     * and supplied relationship/dependency map.
      */
     public function up(): void
     {
         Schema::create('notification_reads', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('project_notification_id')->constrained('project_notifications')->cascadeOnDelete();
+            $table->dateTime('read_at')->nullable();
             $table->timestamps();
+            $table->unique(['user_id', 'project_notification_id']);
+            $table->index(['user_id', 'read_at']);
         });
     }
 

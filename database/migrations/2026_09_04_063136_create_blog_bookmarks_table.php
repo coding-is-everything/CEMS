@@ -8,12 +8,18 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * Schema derived from the CMES Mobile "Schema / Key Fields" catalogue
+     * and supplied relationship/dependency map.
      */
     public function up(): void
     {
         Schema::create('blog_bookmarks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('blog_article_id')->constrained('blog_articles')->cascadeOnDelete();
             $table->timestamps();
+            $table->unique(['user_id', 'blog_article_id']);
         });
     }
 
