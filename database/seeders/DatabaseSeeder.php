@@ -25,6 +25,18 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StateSeeder::class,
             DistrictSeeder::class,
+            ProjectStatusSeeder::class,
+            ProjectTypeSeeder::class,
+            RenewalTypeSeeder::class,
+            RenewalStatusSeeder::class,
+            DocumentCategorySeeder::class,
+            DocumentTypeSeeder::class,
+            NotificationCategorySeeder::class,
+            NewsCategorySeeder::class,
+            BlogCategorySeeder::class,
+            CommunityCategorySeeder::class,
+            ProjectDynamicFieldSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }
