@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -9,44 +8,54 @@ class CommunityCategorySeeder extends Seeder
 {
     /**
      * Seed the community category master data.
+     *
+     * This seeder is idempotent and can safely be executed multiple times.
      */
     public function run(): void
     {
         $categories = [
             [
                 'category_name' => 'General Discussion',
-                'slug' => 'general-discussion',
+                'slug'          => 'general-discussion',
+                'is_active'     => true,
             ],
             [
                 'category_name' => 'Mining Operations',
-                'slug' => 'mining-operations',
+                'slug'          => 'mining-operations',
+                'is_active'     => true,
             ],
             [
                 'category_name' => 'Compliance & Regulation',
-                'slug' => 'compliance-regulation',
+                'slug'          => 'compliance-regulation',
+                'is_active'     => true,
             ],
             [
                 'category_name' => 'Environment',
-                'slug' => 'environment',
+                'slug'          => 'environment',
+                'is_active'     => true,
             ],
             [
                 'category_name' => 'Technology',
-                'slug' => 'technology',
+                'slug'          => 'technology',
+                'is_active'     => true,
             ],
             [
                 'category_name' => 'Help & Support',
-                'slug' => 'help-support',
+                'slug'          => 'help-support',
+                'is_active'     => true,
             ],
         ];
 
-        $rows = array_map(fn (array $category) => array_merge($category, [
-            'status' => 'ACTIVE',
-        ]), $categories);
-
-        DB::table('community_categories')->upsert(
-            $rows,
-            ['slug'],
-            ['category_name', 'status']
-        );
+        foreach ($categories as $category) {
+            DB::table('community_categories')->updateOrInsert(
+                [
+                    'slug' => $category['slug'],
+                ],
+                [
+                    'category_name' => $category['category_name'],
+                    'is_active'     => $category['is_active'],
+                ]
+            );
+        }
     }
 }
